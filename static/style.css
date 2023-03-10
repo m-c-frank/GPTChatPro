@@ -121,8 +121,35 @@ button[type="submit"][disabled] {
     min-height: 32px;
     padding: 16px;
     background: #f1f1f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
 }
 
+.conversation-header-button {
+    background: none;
+    border: none;
+    display: none;
+    cursor: pointer;
+}
+
+.conversation-header-button .material-symbols-outlined {
+    fill: #999;
+}
+
+.conversation-header-button .material-symbols-outlined:hover {
+    fill: #000;
+}
+
+[contenteditable] {
+    border: #000;
+    border-radius: 4px;
+}
+
+.conversation-container-header-title{
+    padding-left: 16px;
+    padding-right: 16px;
+}
 
 .message-element {
     padding: 8px;
@@ -131,6 +158,9 @@ button[type="submit"][disabled] {
     margin: 8px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    min-width: 60%;
+    max-width: 90%;
+
 }
 
 .message-by-user {
@@ -138,7 +168,6 @@ button[type="submit"][disabled] {
     color: #3e3e3e;
     align-items: flex-end;
     justify-content: flex-end;
-    max-width: 60%;
     margin-left: auto;
 }
 
@@ -147,7 +176,6 @@ button[type="submit"][disabled] {
     color: #3e3e3e;
     align-items: flex-start;
     justify-content: flex-start;
-    max-width: 95%;
     margin-right: auto;
 }
 

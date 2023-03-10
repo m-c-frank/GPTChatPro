@@ -5,6 +5,8 @@ const newConversationButton = document.querySelector('#newConversation');
 const deleteConversationsButton = document.querySelector('#deleteConversations');
 const form = document.querySelector('#message-form');
 const loadingOverlay = document.querySelector("#loading-overlay");
+const editButton = document.querySelector('.edit-button');
+const buttonContainer = document.querySelector('.button-container');
 
 let currentConversationId = null;
 
@@ -12,7 +14,6 @@ const populateConversations = () => {
     fetch('/get_conversations')
         .then(response => response.json())
         .then(conversations => {
-            console.log(conversations)
             conversations.forEach(conversation => {
                 makeConversationButton(conversation);
             });
@@ -59,6 +60,55 @@ const appendNewMessage = (message) => {
     });
 }
 
+const titleEditHandler = () => {
+    const buttonContainer = document.querySelector('.button-container');
+    
+    editButton.style.display = "inline-block";
+
+    editButton.addEventListener('click', () => {
+        const span = conversationContainerHeader.querySelector(".conversation-container-header-title");
+        const current_title = span.textContent; 
+        span.contentEditable = "true";
+        span.focus();
+
+        const saveButton = document.createElement('span');
+        saveButton.classList.add('material-symbols-outlined', 'save-button', "conversation-header-button");
+        saveButton.textContent = 'save';
+
+        const cancelButton = document.createElement('span');
+        cancelButton.classList.add('material-symbols-outlined', 'cancel-button', "conversation-header-button");
+        cancelButton.textContent = 'cancel';
+
+        buttonContainer.replaceChildren(saveButton,cancelButton);
+
+        saveButton.addEventListener('click', () => {
+            // fetch post to "/update_title" with args id and title
+            const new_title = span.textContent;
+            fetch(`/update_title?conversation_id=${currentConversationId}&title=${new_title}`)
+                .then(response => response.json())
+                .then(data => { 
+                    titleChangeHandler(data);
+                    // also update the conversationButton by getting the correct button via conversationButton.dataset.conversationId
+                    const conversationButton = document.querySelector(`[data-conversation-id="${currentConversationId}"]`);
+                    conversationButton.textContent = new_title;
+                })
+            buttonContainer.replaceChildren(editButton);
+        });
+
+        cancelButton.addEventListener('click', () => {
+            span.textContent = current_title;
+            buttonContainer.replaceChildren(editButton);
+        });
+    });
+}
+
+const titleChangeHandler = (data) => {
+    const span = conversationContainerHeader.querySelector(".conversation-container-header-title");
+    span.textContent = data.title;
+    buttonContainer.replaceChildren(editButton)
+    span.contentEditable = "false";
+    titleEditHandler();
+}
 
 const fetchAndDisplayMessages = (conversationId) => {
     messageContainer.innerHTML = '';
@@ -67,8 +117,8 @@ const fetchAndDisplayMessages = (conversationId) => {
     fetch(`/get_messages?conversation_id=${conversationId}`)
         .then(response => response.json())
         .then(data => {
-            conversationContainerHeader.textContent = data.title;
             currentConversationId = data.conversation_id;
+            titleChangeHandler(data);
             data["messages"].forEach(message => {
                 appendNewMessage(message);
             });
