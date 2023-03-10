@@ -84,6 +84,10 @@ const titleEditHandler = () => {
         saveButton.addEventListener('click', () => {
             // fetch post to "/update_title" with args id and title
             const new_title = span.textContent;
+            if (new_title === current_title) {
+                buttonContainer.replaceChildren(editButton);
+                return;
+            }
             fetch(`/update_title?conversation_id=${currentConversationId}&title=${new_title}`)
                 .then(response => response.json())
                 .then(data => { 
