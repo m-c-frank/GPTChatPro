@@ -36,10 +36,15 @@
         <div class="conversation-container-header">Select a conversation or create a new one</div>
         <div class="conversation-messages-container">
         </div>
-        <form id="message-form" disabled>
-            <textarea id="message-input" placeholder="Select or create a new conversation" disabled></textarea>
-            <button type="submit" disabled>Send</button>
-        </form>
+        <div class="conversation-user-input">
+            <form id="message-form" disabled>
+                <textarea id="message-input" placeholder="Select or create a new conversation" disabled></textarea>
+                <button type="submit" disabled>Send</button>
+            </form>
+            <div id="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+        </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>

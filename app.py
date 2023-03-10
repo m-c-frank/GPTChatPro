@@ -18,17 +18,15 @@ def send_message():
     message = request.json['message']
     conversation_id = request.json['conversation_id']
 
-
     conversations = db.table('conversations')
     conversation = conversations.get(Query().conversation_id == conversation_id)
-
 
     messages = conversation.get('messages', [{"role": "system", "content": "You are a helpful assistant."}])
     messages.append({"role": "user", "content": message})
     new_response = get_answer(messages)
     messages.append(new_response)
     db.table('conversations').update({'messages': messages}, Query().conversation_id == conversation_id)
-    return jsonify({'conversation_id': conversation_id, "title": conversation.get("title", "New Conversation")})
+    return jsonify(new_response), 200
 
 @app.route("/make_new_conversation")
 def make_new_conversation():
@@ -54,6 +52,7 @@ def get_messages():
         return jsonify(conversation)
     else:
         return jsonify({})
+
 
 @app.route('/get_conversations')
 def get_conversations():
