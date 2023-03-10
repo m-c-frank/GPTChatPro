@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html class="markdown-body">
+
+<head>
+    <title>GPT Chat Pro</title>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0">
+</head>
+
+<body>
+    <div class="nav">
+        <div class="conversation-header conversation-element">Conversations</div>
+        <div class="conversation-list">
+        </div>
+        <hr>
+        <div class="conversation-menu">
+            <div id="newConversation" class="conversation-button conversation-element">
+                <span class="material-symbols-outlined">
+                    add
+                </span>
+                New Conversation
+            </div>
+            <div class="conversation-button conversation-element">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+                Delete Conversations
+            </div>
+        </div>
+    </div>
+    <div class="conversation-container">
+        <div class="conversation-container-header">Select a conversation or create a new one</div>
+        <div class="conversation-messages-container">
+        </div>
+        <form id="message-form" disabled>
+            <textarea id="message-input" placeholder="Select or create a new conversation" disabled></textarea>
+            <button type="submit" disabled>Send</button>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>

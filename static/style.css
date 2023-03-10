@@ -1,0 +1,136 @@
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    margin-top: auto;
+    /* add this line */
+}
+
+hr {
+    margin: 4px;
+    padding: 4px;
+    border:none;
+    border-bottom: 1px solid #8b8b8b;
+}
+textarea {
+    height: 64px;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: none;
+    border-radius: 8px;
+    resize: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+form.disabled,
+button[type="submit"][disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 256px;
+    height: 100vh;
+    display: flex;
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.active {
+    background-color: #ccc;
+}
+
+.conversation-element {
+    margin: 8px;
+    padding: 8px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
+
+.conversation-list{
+    overflow-y: scroll;
+}
+
+.conversation-button {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-menu {
+    margin-top: auto;
+}
+
+
+.conversation-header {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.conversation-container {
+    position: absolute;
+    top: 0;
+    left: 256px;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    background-color: #fff;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.conversation-container-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    min-height: 32px;
+    padding: 16px;
+    background: #f1f1f1;
+}
+
+
+.message-by-user {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+}
+
+.message-by-assistant {
+    background-color: #f8f9fa;
+    color: #212529;
+    align-self: flex-start;
+}
