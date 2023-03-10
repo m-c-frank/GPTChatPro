@@ -189,3 +189,20 @@ button[type="submit"][disabled] {
         transform: rotate(360deg);
     }
 }
+
+.slide-up {
+    animation-name: slide-up;
+    animation-duration: 0.5s;
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

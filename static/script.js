@@ -44,11 +44,21 @@ const appendNewMessage = (message) => {
     messageElement.classList.add('message-element');
     messageElement.classList.add(`message-by-${message.role}`);
     messageElement.innerHTML = marked.parse(message.content);
+
+    // Add the slide-up class to the message element
+    messageElement.classList.add('slide-up');
+
     messageContainer.appendChild(messageElement);
     messageElement.querySelectorAll('pre').forEach(el => {
         hljs.highlightElement(el);
     });
+
+    messageContainer.scrollTo({
+        top: messageContainer.scrollHeight,
+        behavior: 'smooth'
+    });
 }
+
 
 const fetchAndDisplayMessages = (conversationId) => {
     messageContainer.innerHTML = '';
@@ -155,6 +165,7 @@ newConversationButton.addEventListener('click', () => {
         .then(response => response.json())
         .then(conversation => {
             makeConversationButton(conversation);
+            fetchAndDisplayMessages(conversation.conversation_id);
         })
         .catch(error => console.error(error));
 });
@@ -168,8 +179,7 @@ deleteConversationsButton.addEventListener('click', () => {
             method: 'POST',
         }).then(response => {
             if (response.ok) {
-                conversationList.innerHTML = '';
-                populateConversations();
+                window.location.reload();
             }
         })
     } catch (error) {
