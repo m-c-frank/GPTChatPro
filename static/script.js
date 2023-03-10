@@ -4,6 +4,7 @@ const conversationContainerHeader = document.querySelector('.conversation-contai
 const newConversationButton = document.querySelector('#newConversation');
 const deleteConversationsButton = document.querySelector('#deleteConversations');
 const form = document.querySelector('#message-form');
+const loadingOverlay = document.querySelector("#loading-overlay");
 
 let currentConversationId = null;
 
@@ -22,8 +23,6 @@ const populateConversations = () => {
 }
 
 
-
-
 const enableForm = () => {
     const textarea = form.querySelector('textarea');
     textarea.disabled = false;
@@ -40,6 +39,17 @@ const disableForm = (reason) => {
     form.disabled = true;
 }
 
+const appendNewMessage = (message) => {
+    const messageElement = document.createElement('div');
+    messageElement.classList.add('message-element');
+    messageElement.classList.add(`message-by-${message.role}`);
+    messageElement.innerHTML = marked.parse(message.content);
+    messageContainer.appendChild(messageElement);
+    messageElement.querySelectorAll('pre').forEach(el => {
+        hljs.highlightElement(el);
+    });
+}
+
 const fetchAndDisplayMessages = (conversationId) => {
     messageContainer.innerHTML = '';
 
@@ -47,19 +57,10 @@ const fetchAndDisplayMessages = (conversationId) => {
     fetch(`/get_messages?conversation_id=${conversationId}`)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             conversationContainerHeader.textContent = data.title;
             currentConversationId = data.conversation_id;
-            console.log(currentConversationId)
             data["messages"].forEach(message => {
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message-element');
-                messageElement.classList.add(`message-by-${message.role}`);
-                messageElement.innerHTML = marked.parse(message.content);
-                messageContainer.appendChild(messageElement);
-                document.querySelectorAll('pre').forEach(el => {
-                    hljs.highlightElement(el);
-                });
+                appendNewMessage(message);
             });
         })
         .catch(error => {
@@ -86,11 +87,28 @@ const makeConversationButton = (conversation) => {
 
 }
 
+const showLoadingOverlay = () => {
+    loadingOverlay.style.display = "flex";
+    console.log(loadingOverlay)
+    console.log(loadingOverlay.style)
+    console.log(loadingOverlay.style.display)
+
+    loadingOverlay.style.width = form.offsetWidth + "px";
+    loadingOverlay.style.height = form.offsetHeight + "px";
+    loadingOverlay.style.top = form.offsetTop + "px";
+    loadingOverlay.style.left = form.offsetLeft + "px";
+}
+
+const hideLoadingOverlay = () => {
+    loadingOverlay.style.display = "none";
+}
+
 form.addEventListener('submit', async (event) => {
     event.preventDefault(); // prevent the default form submission
     if (currentConversationId === null) {
         return;
     }
+    showLoadingOverlay();
     disableForm("Sending message...");
 
     const input = document.querySelector('#message-input');
@@ -100,19 +118,34 @@ form.addEventListener('submit', async (event) => {
         const body = {
             "message": message,
             "conversation_id": currentConversationId
-        }
-
-        const response = await fetch('/send_message', {
+        };
+        appendNewMessage({
+            "content": message,
+            "role": "user"
+        });
+        fetch('/send_message', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body) // send a JSON payload with the message
-        }).then(response => {
-            if (response.ok) {
-                input.value = ''; // clear the input field
-                enableForm();
-            }
         })
+            .then(response => {
+                if (response.ok) {
+                    input.value = ''; // clear the input field
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log(data)
+                enableForm();
+                hideLoadingOverlay();
+                appendNewMessage(data);
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle the error
+            });
     }
+
 });
 
 populateConversations();
