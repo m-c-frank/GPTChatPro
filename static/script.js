@@ -44,12 +44,19 @@ const appendNewMessage = (message) => {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message-element');
     messageElement.classList.add(`message-by-${message.role}`);
-    messageElement.innerHTML = marked.parse(message.content);
 
+
+    if (message.role == "user") {
+        messageElement.innerText = message.content;
+    } else {
+        const parsedContent = DOMPurify.sanitize(marked.parse(message.content, { breaks: true }))
+        messageElement.innerHTML = parsedContent;
+    }
     // Add the slide-up class to the message element
     messageElement.classList.add('slide-up');
 
     messageContainer.appendChild(messageElement);
+
     messageElement.querySelectorAll('pre').forEach(el => {
         hljs.highlightElement(el);
     });
@@ -60,14 +67,15 @@ const appendNewMessage = (message) => {
     });
 }
 
+
 const titleEditHandler = () => {
     const buttonContainer = document.querySelector('.button-container');
-    
+
     editButton.style.display = "inline-block";
 
     editButton.addEventListener('click', () => {
         const span = conversationContainerHeader.querySelector(".conversation-container-header-title");
-        const current_title = span.textContent; 
+        const current_title = span.textContent;
         span.contentEditable = "true";
         span.focus();
 
@@ -79,7 +87,7 @@ const titleEditHandler = () => {
         cancelButton.classList.add('material-symbols-outlined', 'cancel-button', "conversation-header-button");
         cancelButton.textContent = 'cancel';
 
-        buttonContainer.replaceChildren(saveButton,cancelButton);
+        buttonContainer.replaceChildren(saveButton, cancelButton);
 
         saveButton.addEventListener('click', () => {
             // fetch post to "/update_title" with args id and title
@@ -90,7 +98,7 @@ const titleEditHandler = () => {
             }
             fetch(`/update_title?conversation_id=${currentConversationId}&title=${new_title}`)
                 .then(response => response.json())
-                .then(data => { 
+                .then(data => {
                     titleChangeHandler(data);
                     // also update the conversationButton by getting the correct button via conversationButton.dataset.conversationId
                     const conversationButton = document.querySelector(`[data-conversation-id="${currentConversationId}"]`);
