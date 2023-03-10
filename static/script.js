@@ -2,32 +2,27 @@ const conversationList = document.querySelector('.conversation-list');
 const messageContainer = document.querySelector('.conversation-messages-container');
 const conversationContainerHeader = document.querySelector('.conversation-container-header');
 const newConversationButton = document.querySelector('#newConversation');
+const deleteConversationsButton = document.querySelector('#deleteConversations');
 const form = document.querySelector('#message-form');
 
 let currentConversationId = null;
 
-
-fetch('/get_conversations')
-    .then(response => response.json())
-    .then(conversations => {
-        conversations.forEach(conversation => {
-            makeConversationButton(conversation);
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching conversations:', error);
-    });
-
-
-
-newConversationButton.addEventListener('click', () => {
-    fetch('/make_new_conversation')
+const populateConversations = () => {
+    fetch('/get_conversations')
         .then(response => response.json())
-        .then(conversation => {
-            makeConversationButton(conversation);
+        .then(conversations => {
+            console.log(conversations)
+            conversations.forEach(conversation => {
+                makeConversationButton(conversation);
+            });
         })
-        .catch(error => console.error(error));
-});
+        .catch(error => {
+            console.error('Error fetching conversations:', error);
+        });
+}
+
+
+
 
 const enableForm = () => {
     const textarea = form.querySelector('textarea');
@@ -36,7 +31,13 @@ const enableForm = () => {
     textarea.focus();
     form.querySelector('button').disabled = false;
     form.disabled = false;
+}
 
+const disableForm = (reason) => {
+    const textarea = form.querySelector('textarea');
+    textarea.disabled = true;
+    form.querySelector('button').disabled = true;
+    form.disabled = true;
 }
 
 const fetchAndDisplayMessages = (conversationId) => {
@@ -76,7 +77,7 @@ const makeConversationButton = (conversation) => {
     conversationButton.dataset.conversationId = conversation.conversation_id;
 
     // Insert the conversation button into the DOM as child with index 0
-    conversationList.insertBefore(conversationButton, conversationList.firstChild.nextSibling);
+    conversationList.childElementCount === 0 ? conversationList.appendChild(conversationButton) : conversationList.insertBefore(conversationButton, conversationList.firstChild.nextSibling);
 
     conversationButton.addEventListener('click', () => {
         // Call the fetchAndDisplayMessages function to fetch and display messages for the selected conversation
@@ -90,28 +91,55 @@ form.addEventListener('submit', async (event) => {
     if (currentConversationId === null) {
         return;
     }
+    disableForm("Sending message...");
 
     const input = document.querySelector('#message-input');
     const message = input.value.trim(); // retrieve the input value and trim whitespace
 
     if (message !== '') {
-        try {
-            const response = await fetch('/send-message', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message }) // send a JSON payload with the message
-            });
-
-            if (response.ok) {
-                // handle the successful response
-            } else {
-                // handle the unsuccessful response
-            }
-        } catch (error) {
-            // handle any errors that occurred during the request
+        const body = {
+            "message": message,
+            "conversation_id": currentConversationId
         }
-    }
 
-    input.value = ''; // clear the input field
+        const response = await fetch('/send_message', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body) // send a JSON payload with the message
+        }).then(response => {
+            if (response.ok) {
+                input.value = ''; // clear the input field
+                enableForm();
+            }
+        })
+    }
 });
 
+populateConversations();
+
+newConversationButton.addEventListener('click', () => {
+    fetch('/make_new_conversation')
+        .then(response => response.json())
+        .then(conversation => {
+            makeConversationButton(conversation);
+        })
+        .catch(error => console.error(error));
+});
+
+deleteConversationsButton.addEventListener('click', () => {
+    if (!confirm("Are you sure you want to delete all conversations?")) {
+        return;
+    }
+    try {
+        fetch('/delete_all_conversations', {
+            method: 'POST',
+        }).then(response => {
+            if (response.ok) {
+                conversationList.innerHTML = '';
+                populateConversations();
+            }
+        })
+    } catch (error) {
+        // handle any errors that occurred during the request
+    }
+});
