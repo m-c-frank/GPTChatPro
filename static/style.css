@@ -76,7 +76,7 @@ button[type="submit"][disabled] {
 }
 
 .conversation-list{
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .conversation-button {
