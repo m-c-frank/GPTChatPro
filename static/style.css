@@ -7,7 +7,10 @@ form {
     box-sizing: border-box;
     background-color: #f2f2f2;
     margin-top: auto;
-    /* add this line */
+}
+
+pre {
+    max-width: 95%;
 }
 
 hr {
@@ -146,7 +149,7 @@ button[type="submit"][disabled] {
     border-radius: 4px;
 }
 
-.conversation-container-header-title{
+.conversation-container-header-title {
     padding-left: 16px;
     padding-right: 16px;
 }
