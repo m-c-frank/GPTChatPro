@@ -1,12 +1,6 @@
-const conversationList = document.querySelector('.conversation-list');
-const messageContainer = document.querySelector('.conversation-messages-container');
-const conversationContainerHeader = document.querySelector('.conversation-container-header');
-const newConversationButton = document.querySelector('#newConversation');
-const deleteConversationsButton = document.querySelector('#deleteConversations');
-const form = document.querySelector('#message-form');
-const loadingOverlay = document.querySelector("#loading-overlay");
-const editButton = document.querySelector('.edit-button');
-const buttonContainer = document.querySelector('.button-container');
+import {
+    conversationList, messageContainer, conversationContainerHeader, newConversationButton, deleteConversationsButton, form, loadingOverlay, editButton, buttonContainer
+} from './domElements.js';
 
 let currentConversationId = null;
 
@@ -119,7 +113,6 @@ const titleChangeHandler = (data) => {
     span.textContent = data.title;
     buttonContainer.replaceChildren(editButton)
     span.contentEditable = "false";
-    titleEditHandler();
 }
 
 const fetchAndDisplayMessages = (conversationId) => {
@@ -134,6 +127,7 @@ const fetchAndDisplayMessages = (conversationId) => {
             data["messages"].forEach(message => {
                 appendNewMessage(message);
             });
+            titleEditHandler();
         })
         .catch(error => {
             console.error('Error fetching messages:', error);
