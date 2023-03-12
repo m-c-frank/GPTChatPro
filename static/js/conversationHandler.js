@@ -20,6 +20,52 @@ const disableForm = () => {
     form.disabled = true;
 }
 
+const applyCodeStyling = (messageElement) => {
+    // Find all pre elements that contain code
+    const preElements = messageElement.querySelectorAll('pre');
+    preElements.forEach((preElement) => {
+        const container = document.createElement('div');
+        container.classList.add('code-container');
+
+        const title = document.createElement('div');
+        title.classList.add('code-title');
+        title.textContent = 'Code Snippet';
+        container.appendChild(title);
+
+        const newPreElement = document.createElement('pre');
+        newPreElement.textContent = preElement.textContent;
+
+        container.appendChild(newPreElement);
+
+        // Create a new copy button
+        const copyButton = document.createElement('span');
+        copyButton.classList.add('material-symbols-outlined', 'clickable-span');
+        copyButton.textContent = 'content_copy';
+        title.appendChild(copyButton);
+
+        // Initialize the click event for the copyButton
+        copyButton.addEventListener('click', () => {
+            // Copy the code to the clipboard
+            const range = document.createRange();
+            range.selectNode(newPreElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            document.execCommand('copy');
+            selection.removeAllRanges();
+        });
+
+        // Replace the original pre element with the new pre element inside the container
+        preElement.parentNode.replaceChild(container, preElement);
+
+        // Apply syntax highlighting to the code
+        hljs.highlightElement(newPreElement);
+    });
+    return messageElement;
+}
+
+
+
 const appendNewMessage = (message) => {
     const messageElement = document.createElement('div');
     messageElement.classList.add('message-element');
@@ -34,11 +80,8 @@ const appendNewMessage = (message) => {
     }
 
     messageElement.classList.add('slide-up');
-    messageContainer.appendChild(messageElement);
 
-    messageElement.querySelectorAll('pre').forEach(el => {
-        hljs.highlightElement(el);
-    });
+    messageContainer.appendChild(applyCodeStyling(messageElement));
 
     messageContainer.scrollTo({
         top: messageContainer.scrollHeight,

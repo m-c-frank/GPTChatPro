@@ -5,7 +5,7 @@ const titleSpan = conversationContainerHeader.querySelector('.conversation-conta
 
 const createEditButton = (text) => {
     const button = document.createElement('span');
-    button.classList.add('material-symbols-outlined', "conversation-header-button", `${text}-button`);
+    button.classList.add('material-symbols-outlined', "clickable-span", `${text}-button`);
     button.textContent = text;
     return button;
 }
