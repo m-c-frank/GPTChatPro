@@ -172,4 +172,9 @@ const makeConversation = async () => {
 
 export const setupForm = () => {
     form.addEventListener('submit', handleSubmit);
+    form.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            handleSubmit(event);
+        }
+    });
 }
