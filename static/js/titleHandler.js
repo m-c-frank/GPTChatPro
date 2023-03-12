@@ -4,9 +4,15 @@ const conversationContainerHeader = document.querySelector('.conversation-contai
 const titleSpan = conversationContainerHeader.querySelector('.conversation-container-header-title');
 
 const createEditButton = (text) => {
-    const button = document.createElement('span');
-    button.classList.add('material-symbols-outlined', "clickable-span", `${text}-button`);
-    button.textContent = text;
+    const button = document.createElement('div');
+    const icon = document.createElement('i');
+    const circle = document.createElement('span');
+    circle.classList.add('circle');
+    button.classList.add('clickable-icon-container');
+    icon.classList.add('material-symbols-outlined');
+    icon.textContent = text;
+    button.appendChild(icon);
+    button.appendChild(circle);
     return button;
 }
 
@@ -26,6 +32,21 @@ const updateConversationButton = (conversationId, newTitle) => {
     conversationButton.textContent = newTitle;
 }
 
+
+const fadeOutButtonContainer = () => {
+    buttonContainer.classList.remove('fade-in');
+    buttonContainer.classList.add('fade-out'); // Add the fade-out class
+    setTimeout(() => {
+        buttonContainer.replaceChildren(editButton);
+        buttonContainer.classList.remove('fade-out'); // Remove the fade-out class
+    }, 250); // Wait for the fade-out animation to complete
+};
+
+const fadeInButtonContainer = () => {
+    buttonContainer.classList.remove('fade-out');
+    buttonContainer.classList.add('fade-in');
+};
+
 const addSaveButtonListener = (saveButton, currentTitle, currentConversationId) => {
     saveButton.addEventListener('click', async () => {
         const newTitle = titleSpan.textContent;
@@ -34,30 +55,34 @@ const addSaveButtonListener = (saveButton, currentTitle, currentConversationId) 
             titleChangeHandler(data);
             updateConversationButton(currentConversationId, newTitle);
         }
-        buttonContainer.replaceChildren(editButton);
+        fadeOutButtonContainer();
     });
-}
+};
+
 const addCancelButtonListener = (cancelButton, currentTitle) => {
     cancelButton.addEventListener('click', () => {
         titleSpan.textContent = currentTitle;
-        buttonContainer.replaceChildren(editButton);
+        fadeOutButtonContainer();
     });
-}
+};
+
 const editTitle = (currentConversationId) => {
     const currentTitle = titleSpan.textContent;
     titleSpan.contentEditable = 'true';
     titleSpan.focus();
 
     const { saveButton, cancelButton } = createEditButtons();
+
+    fadeInButtonContainer();
     buttonContainer.replaceChildren(saveButton, cancelButton);
 
     titleSpan.contentEditable = 'true';
     titleSpan.focus();
-    buttonContainer.replaceChildren(saveButton, cancelButton);
 
     addSaveButtonListener(saveButton, currentTitle, currentConversationId);
     addCancelButtonListener(cancelButton, currentTitle);
 }
+
 
 export const titleEditHandler = (currentConversationId) => {
     editButton.style.display = 'inline-block';

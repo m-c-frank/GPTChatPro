@@ -38,9 +38,16 @@ const applyCodeStyling = (messageElement) => {
         container.appendChild(newPreElement);
 
         // Create a new copy button
-        const copyButton = document.createElement('span');
-        copyButton.classList.add('material-symbols-outlined', 'clickable-span');
-        copyButton.textContent = 'content_copy';
+        const copyButton = document.createElement('div');
+        const copyIcon = document.createElement('i');
+        const circle = document.createElement('span');
+        circle.classList.add('circle');
+        copyButton.classList.add('clickable-icon-container');
+        copyIcon.classList.add('material-symbols-outlined');
+        copyIcon.textContent = 'content_copy';
+        copyButton.appendChild(copyIcon);
+        copyButton.appendChild(circle);
+
         title.appendChild(copyButton);
 
         // Initialize the click event for the copyButton
