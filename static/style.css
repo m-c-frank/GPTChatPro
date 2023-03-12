@@ -118,21 +118,19 @@ button[type="submit"][disabled] {
     font-size: 24px;
     font-weight: bold;
     margin: 0;
-    min-height: 32px;
+    height: 48px;
+    max-height: 48px;
     padding: 16px;
     background: #f1f1f1;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
 }
 
-
-.conversation-header-button .material-symbols-outlined {
-    fill: #999;
-}
-
-.conversation-header-button .material-symbols-outlined:hover {
-    fill: #000;
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .material-symbols-outlined {
@@ -146,13 +144,47 @@ button[type="submit"][disabled] {
     transition: transform 0.3s ease;
 }
 
-.clickable-span {
+.clickable-icon-container {
+    display: inline-block;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    margin: 8px;
     cursor: pointer;
 }
 
+.clickable-icon-container:hover .circle {
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.clickable-icon-container i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    z-index: 2;
+}
+
+.circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    z-index: 1;
+}
 
 .material-symbols-outlined:active {
-    transform: scale(1.2);
+    transform: translate(-50%, -50%) scale(1.2);
 }
 
 
@@ -265,7 +297,9 @@ button[type="submit"][disabled] {
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
-    padding: 8px;
+    align-items: center;
+    padding-left: 8px;
+    padding-right: 8px;
     background: #f0f0f0;
 }
 
@@ -273,4 +307,34 @@ button[type="submit"][disabled] {
 pre {
     padding-right: 8px;
     padding-left: 8px;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fade-in 0.25s ease-in-out forwards;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    opacity: 1;
+    animation: fade-out 0.25s ease-in-out forwards;
+}
+
+@keyframes fade-out {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }

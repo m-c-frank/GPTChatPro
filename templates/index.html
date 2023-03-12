@@ -19,15 +19,21 @@
         <div class="conversation-menu">
             <hr>
             <div id="newConversation" class="conversation-button conversation-element">
-                <span class="material-symbols-outlined clickable-span">
-                    add
-                </span>
+                <div class="clickable-icon-container">
+                    <i class="material-symbols-outlined">
+                        add
+                    </i>
+                    <span class="circle"></span>
+                </div>
                 New Conversation
             </div>
             <div id="deleteConversations" class="conversation-button conversation-element">
-                <span class="material-symbols-outlined clickable-span">
-                    delete
-                </span>
+                <div class="clickable-icon-container">
+                    <i class="material-symbols-outlined">
+                        delete
+                    </i>
+                    <span class="circle"></span>
+                </div>
                 Delete Conversations
             </div>
         </div>
@@ -36,9 +42,12 @@
         <div class="conversation-container-header">
             <span class="conversation-container-header-title">Select a conversation or create a new one</span>
             <div class="button-container">
-                <span class="material-symbols-outlined edit-button clickable-span" style="display:none">
-                    edit
-                </span>
+                <div class="clickable-icon-container edit-button" style="display: none">
+                    <i class="material-symbols-outlined">
+                        edit
+                    </i>
+                    <span class="circle"></span>
+                </div>
             </div>
         </div>
         <div class="conversation-messages-container">
@@ -58,4 +67,5 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>
