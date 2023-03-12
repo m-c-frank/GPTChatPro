@@ -9,9 +9,6 @@ form {
     margin-top: auto;
 }
 
-pre {
-    max-width: 95%;
-}
 
 hr {
     margin: 4px;
@@ -129,12 +126,6 @@ button[type="submit"][disabled] {
     align-items: baseline;
 }
 
-.conversation-header-button {
-    background: none;
-    border: none;
-    display: none;
-    cursor: pointer;
-}
 
 .conversation-header-button .material-symbols-outlined {
     fill: #999;
@@ -143,6 +134,28 @@ button[type="submit"][disabled] {
 .conversation-header-button .material-symbols-outlined:hover {
     fill: #000;
 }
+
+.material-symbols-outlined {
+    background: none;
+    border: none;
+    display: none;
+    display: inline-block;
+    font-size: 24px;
+    color: #000000;
+    padding: 8px;
+    transition: transform 0.3s ease;
+}
+
+.clickable-span {
+    cursor: pointer;
+}
+
+
+.material-symbols-outlined:active {
+    transform: scale(1.2);
+}
+
+
 
 [contenteditable] {
     border: #000;
@@ -236,4 +249,28 @@ button[type="submit"][disabled] {
         transform: translateY(0);
         opacity: 1;
     }
+}
+
+.code-container {
+    max-width: 95%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.code-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    background: #f0f0f0;
+}
+
+
+pre {
+    padding-right: 8px;
+    padding-left: 8px;
 }
