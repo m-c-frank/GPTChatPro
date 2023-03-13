@@ -1,4 +1,4 @@
-# ChatGPT Pro
+# GPTChatPro
 This is a blatant clone of [ChatGPT](https://chat.openai.com/) which uses the new gpt-3.5-turbo model. This can be used as an alternative to the ChatGPT Plus subscription service. You only need to pay the API costs of OpenAI on demand with this one. This is for the people who don't think they will use up 20$ of API credit per month.
 
 <p>
